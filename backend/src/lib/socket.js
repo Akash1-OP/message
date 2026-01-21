@@ -9,7 +9,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: [ENV.CLIENT_URL],
+    origin: ENV.CLIENT_URL || "http://localhost:3001",
     credentials: true,
   },
 });
@@ -22,11 +22,11 @@ export function getReceiverSocketId(userId) {
   return userSocketMap[userId];
 }
 
-// this is for storig online users
+// this is for storing online users
 const userSocketMap = {}; // {userId:socketId}
 
 io.on("connection", (socket) => {
-  console.log("A user connected", socket.user.fullName);
+  console.log("✅ A user connected:", socket.user.fullName);
 
   const userId = socket.userId;
   userSocketMap[userId] = socket.id;
@@ -36,7 +36,7 @@ io.on("connection", (socket) => {
 
   // with socket.on we listen for events from clients
   socket.on("disconnect", () => {
-    console.log("A user disconnected", socket.user.fullName);
+    console.log("❌ A user disconnected:", socket.user.fullName);
     delete userSocketMap[userId];
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
   });
