@@ -9,7 +9,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ENV.CLIENT_URL || "http://localhost:3001",
+    origin: ENV.CLIENT_URL || "https://message-96d5.vercel.app",
     credentials: true,
   },
 });
