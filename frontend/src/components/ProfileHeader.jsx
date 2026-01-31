@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { LogOutIcon, VolumeOffIcon, Volume2Icon } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import { useChatStore } from "../store/useChatStore";
+import avatarImg from "../assets/images/avatar.png";
 
 const mouseClickSound = new Audio("/sounds/mouse-click.mp3");
 
@@ -37,7 +38,7 @@ function ProfileHeader() {
               onClick={() => fileInputRef.current.click()}
             >
               <img
-                src={selectedImg || authUser.profilePic || "/avatar.png"}
+                src={selectedImg || authUser.profilePic || avatarImg}
                 alt="User image"
                 className="size-full object-cover"
               />
@@ -81,7 +82,9 @@ function ProfileHeader() {
             onClick={() => {
               // play click sound before toggling
               mouseClickSound.currentTime = 0; // reset to start
-              mouseClickSound.play().catch((error) => console.log("Audio play failed:", error));
+              mouseClickSound
+                .play()
+                .catch((error) => console.log("Audio play failed:", error));
               toggleSound();
             }}
           >

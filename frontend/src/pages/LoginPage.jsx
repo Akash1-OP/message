@@ -8,6 +8,7 @@ import {
   LockIcon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import loginImg from "../assets/images/login.png";
 
 function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -101,7 +102,7 @@ function LoginPage() {
             <div className="hidden md:w-1/2 md:flex items-center justify-center p-6 bg-gradient-to-bl from-slate-800/20 to-transparent">
               <div>
                 <img
-                  src="/login.png"
+                  src={loginImg}
                   alt="People using mobile devices"
                   className="w-full h-auto object-contain"
                 />
