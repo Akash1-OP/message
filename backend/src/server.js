@@ -1,6 +1,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import path from "path";
+import fs from "fs";
 import cors from "cors";
 
 import authRoutes from "./routes/auth.route.js";
@@ -22,11 +23,24 @@ app.use("/api/messages", messageRoutes);
 
 // make ready for deployment
 if (ENV.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+  const distPath = path.join(__dirname, "../frontend/dist");
+  const indexFile = path.join(distPath, "index.html");
 
-  app.get("*", (_, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
-  });
+  // Only serve static files if the frontend build exists.
+  if (fs.existsSync(distPath) && fs.existsSync(indexFile)) {
+    app.use(express.static(distPath));
+
+    app.get("*", (_, res) => {
+      res.sendFile(indexFile);
+    });
+  } else {
+    // Avoid throwing ENOENT on platforms where frontend isn't built or included.
+    // Log a warning so the deployment doesn't fail when frontend files are absent.
+    // The frontend can be deployed separately (recommended).
+    // This prevents the JSON ENOENT error page on Vercel when dist is missing.
+    // eslint-disable-next-line no-console
+    console.warn("Frontend 'dist' not found — skipping static file serving.");
+  }
 }
 
 // Global error handling middleware
