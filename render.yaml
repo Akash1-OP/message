@@ -1,9 +1,9 @@
 services:
   - type: web
-    name: sms-chat-backend
+    name: sms-chat-app
     env: node
     plan: free
-    buildCommand: npm install --prefix backend
+    buildCommand: npm install --prefix backend && npm run build --prefix frontend
     startCommand: node backend/src/server.js
     envVars:
       - key: NODE_ENV
