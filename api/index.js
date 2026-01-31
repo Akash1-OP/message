@@ -22,7 +22,9 @@ app.get("/api/health", (req, res) => {
 
 // Root endpoint
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "SMS Chat Application Backend API", status: "ok" });
+  res
+    .status(200)
+    .json({ message: "SMS Chat Application Backend API", status: "ok" });
 });
 
 // Global error handling middleware
